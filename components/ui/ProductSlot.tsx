@@ -38,10 +38,10 @@ export function ProductSlot({
   const activeType = type || assets.heroProduct.type || '3d';
 
   const sizeClasses = {
-    sm: 'w-[140px] h-[220px]',
-    md: 'w-[200px] h-[320px]',
-    lg: 'w-[260px] h-[400px]',
-    hero: 'w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] h-[440px] sm:h-[500px] md:h-[560px] lg:h-[620px]',
+    sm: 'w-[140px] h-[210px]',
+    md: 'w-[180px] h-[270px]',
+    lg: 'w-[230px] h-[340px]',
+    hero: 'w-[260px] sm:w-[280px] md:w-[300px] h-[380px] sm:h-[400px]',
   };
 
   // 1. Interactive 3D Luxury Glass Bottle Mode

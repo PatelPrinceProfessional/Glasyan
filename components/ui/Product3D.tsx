@@ -38,10 +38,10 @@ export function Product3D({
   const [hasWebGL, setHasWebGL] = useState(true);
 
   const dimensions = {
-    sm: { width: 180, height: 260 },
-    md: { width: 240, height: 350 },
-    lg: { width: 320, height: 460 },
-    hero: { width: 380, height: 560 },
+    sm: { width: 140, height: 210 },
+    md: { width: 180, height: 270 },
+    lg: { width: 230, height: 340 },
+    hero: { width: 270, height: 400 },
   }[size];
 
   useEffect(() => {
@@ -68,7 +68,8 @@ export function Product3D({
     const scene = new THREE.Scene();
 
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 50);
-    camera.position.set(0, 0.15, 5.0);
+    camera.position.set(0, 0.0, 5.5);
+    camera.lookAt(0, 0, 0);
 
     // 2. RENDERER
     const renderer = new THREE.WebGLRenderer({
@@ -110,6 +111,12 @@ export function Product3D({
     const bottleGroup = new THREE.Group();
     scene.add(bottleGroup);
 
+    // Inner group to center and scale the bottle geometry properly
+    const bottleInnerGroup = new THREE.Group();
+    bottleInnerGroup.position.y = -0.42; // Vertically center the bottle around y=0
+    bottleInnerGroup.scale.set(0.72, 0.72, 0.72); // Compact luxury scale so full base is visible
+    bottleGroup.add(bottleInnerGroup);
+
     // --- A. OUTER GLASS BODY (Lathe Geometry for true French luxury vial silhouette) ---
     const glassPoints: THREE.Vector2[] = [
       new THREE.Vector2(0.0, -1.65),
@@ -143,7 +150,7 @@ export function Product3D({
       attenuationDistance: 1.8,
     });
     const glassMesh = new THREE.Mesh(glassGeo, glassMat);
-    bottleGroup.add(glassMesh);
+    bottleInnerGroup.add(glassMesh);
 
     // --- B. INNER GLACIAL ELIXIR LIQUID VOLUME ---
     const liquidPoints: THREE.Vector2[] = [
@@ -168,7 +175,7 @@ export function Product3D({
       attenuationDistance: 0.9,
     });
     const liquidMesh = new THREE.Mesh(liquidGeo, liquidMat);
-    bottleGroup.add(liquidMesh);
+    bottleInnerGroup.add(liquidMesh);
 
     // --- C. INTERNAL GLASS DROPPER PIPETTE ---
     const pipetteGeo = new THREE.CylinderGeometry(0.035, 0.025, 2.3, 20);
@@ -180,7 +187,7 @@ export function Product3D({
     });
     const pipetteMesh = new THREE.Mesh(pipetteGeo, pipetteMat);
     pipetteMesh.position.set(0, -0.3, 0);
-    bottleGroup.add(pipetteMesh);
+    bottleInnerGroup.add(pipetteMesh);
 
     // --- D. CHAMPAGNE GOLD ANODIZED DROPPER COLLAR ---
     const collarGeo = new THREE.CylinderGeometry(0.35, 0.35, 0.42, 36);
@@ -191,14 +198,14 @@ export function Product3D({
     });
     const collarMesh = new THREE.Mesh(collarGeo, collarMat);
     collarMesh.position.set(0, 1.52, 0);
-    bottleGroup.add(collarMesh);
+    bottleInnerGroup.add(collarMesh);
 
     // Delicate micro-accent ring on collar
     const collarRingGeo = new THREE.TorusGeometry(0.36, 0.02, 16, 36);
     const collarRingMesh = new THREE.Mesh(collarRingGeo, collarMat);
     collarRingMesh.rotation.x = Math.PI / 2;
     collarRingMesh.position.set(0, 1.68, 0);
-    bottleGroup.add(collarRingMesh);
+    bottleInnerGroup.add(collarRingMesh);
 
     // --- E. DROPPER BULB (Pearlescent Rubber Squeeze Pipette Cap) ---
     const bulbPoints: THREE.Vector2[] = [
@@ -216,7 +223,7 @@ export function Product3D({
       metalness: 0.05,
     });
     const bulbMesh = new THREE.Mesh(bulbGeo, bulbMat);
-    bottleGroup.add(bulbMesh);
+    bottleInnerGroup.add(bulbMesh);
 
     // --- F. EMBOSSED BRAND LABEL WITH "GLASYAN" CANVAS TEXTURE ---
     const labelCanvas = document.createElement('canvas');
@@ -293,7 +300,7 @@ export function Product3D({
     });
     const labelMesh = new THREE.Mesh(labelGeo, labelMat);
     labelMesh.position.set(0, -0.2, 0);
-    bottleGroup.add(labelMesh);
+    bottleInnerGroup.add(labelMesh);
 
     // Initial orientation: slightly angled for optimum lighting and label visibility
     bottleGroup.rotation.y = 0.15;
