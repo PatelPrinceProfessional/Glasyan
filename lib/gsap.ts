@@ -110,13 +110,15 @@ export function splitTextIntoSpans(
   // Words mode (default)
   const words = rawText.trim().split(/\s+/);
   element.innerHTML = words
-    .map((word) => {
+    .map((word, index) => {
+      const isLast = index === words.length - 1;
+      const marginStyle = isLast ? '' : 'style="margin-right: 0.32em;"';
       const inner = `<span class="inline-block word-item will-change-transform">${word}</span>`;
       return maskLines
-        ? `<span class="inline-block overflow-hidden mr-[0.28em] align-top line-mask">${inner}</span>`
-        : `<span class="inline-block mr-[0.28em]">${inner}</span>`;
+        ? `<span class="inline-block overflow-hidden align-top line-mask" ${marginStyle}>${inner}</span>`
+        : `<span class="inline-block" ${marginStyle}>${inner}</span>`;
     })
-    .join('');
+    .join(' ');
 
   const wordElements = Array.from(element.querySelectorAll('.word-item')) as HTMLElement[];
   const maskElements = Array.from(element.querySelectorAll('.line-mask')) as HTMLElement[];
