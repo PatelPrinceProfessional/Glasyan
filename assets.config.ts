@@ -55,9 +55,9 @@ export const assets = {
     alt: "Glasyan — Pure Alpine Hair Essence",
   },
   heroProduct: {
-    type: "placeholder" as const, // later: "image" | "sequence" | "video"
+    type: "3d" as "3d" | "placeholder" | "image" | "sequence" | "video",
     src: undefined,
-    alt: "Glasyan Archetype Elixir Capsule",
+    alt: "Glasyan Grand Glacial Elixir 3D Vessel",
   },
   collections: [
     {

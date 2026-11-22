@@ -2,32 +2,41 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Product3D } from './Product3D';
+import { assets } from '@/assets.config';
 
 interface ProductSlotProps {
   imageSrc?: string;
   alt?: string;
-  type?: 'placeholder' | 'image' | 'video';
+  type?: 'placeholder' | 'image' | 'video' | '3d';
   className?: string;
   aspectRatio?: string;
   size?: 'sm' | 'md' | 'lg' | 'hero';
   showLabel?: boolean;
+  interactive?: boolean;
+  enableDrag?: boolean;
 }
 
 /**
  * ProductSlot Component
- * Renders neutral placeholder (soft-edged capsule with pearl-to-aqua gradient,
- * faint glass highlight, subtle drop shadow, small "PRODUCT" label)
- * or can accept a real transparent PNG/WebP without touching section animation code.
- * All animations MUST target the slot's outer wrapper element!
+ * Renders:
+ * - '3d': High-end interactive procedural 3D glass elixir bottle with "GLASYAN" label
+ * - 'placeholder': Neutral soft-edged archetype glass capsule
+ * - 'image': Real transparent PNG/WebP bottle shot
+ * All animations target the outer wrapper element!
  */
 export function ProductSlot({
   imageSrc,
   alt = 'Glasyan Archetype Elixir Capsule',
-  type = 'placeholder',
+  type,
   className = '',
   size = 'hero',
   showLabel = true,
+  interactive = true,
+  enableDrag = true,
 }: ProductSlotProps) {
+  const activeType = type || assets.heroProduct.type || '3d';
+
   const sizeClasses = {
     sm: 'w-[140px] h-[220px]',
     md: 'w-[200px] h-[320px]',
@@ -35,7 +44,21 @@ export function ProductSlot({
     hero: 'w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] h-[440px] sm:h-[500px] md:h-[560px] lg:h-[620px]',
   };
 
-  if (type === 'image' && imageSrc) {
+  // 1. Interactive 3D Luxury Glass Bottle Mode
+  if (activeType === '3d') {
+    return (
+      <div className={`relative flex items-center justify-center select-none ${className}`}>
+        <Product3D
+          size={size}
+          interactive={interactive}
+          enableDrag={enableDrag}
+        />
+      </div>
+    );
+  }
+
+  // 2. Static Transparent Image Mode
+  if (activeType === 'image' && imageSrc) {
     return (
       <div className={`relative flex items-center justify-center select-none pointer-events-none ${sizeClasses[size]} ${className}`}>
         <Image
