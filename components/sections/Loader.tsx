@@ -12,10 +12,10 @@ interface LoaderProps {
  * Loader Component
  * Section 6.0: First-visit loader per session
  * 1. Droplet outline draws (0.8s), then fills teal (0.4s).
- * 2. Droplet falls 120px, then 3 ripple rings expand from impact.
- * 3. Wave path draws across while wordmark letters rise out of masks.
+ * 2. Droplet falls 120px into pool, then 3 ripple rings expand from impact point.
+ * 3. Wave path draws across while wordmark letters rise out of overflow masks.
  * 4. Small teal progress number counts 0 to 100.
- * 5. White curtain lifts (clip-path inset top to bottom) while logo scales down to header.
+ * 5. Hold 0.3s, then white loader curtain lifts (clip-path inset top to bottom).
  * Unlocks scroll and starts hero intro.
  */
 export function Loader({ onComplete, forceShow = false }: LoaderProps) {
@@ -26,21 +26,11 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
   const wavePathRef = useRef<SVGPathElement>(null);
   const wordmarkRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<HTMLSpanElement>(null);
-  const [shouldRender, setShouldRender] = useState(false);
+
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Check session storage
     if (typeof window === 'undefined') return;
-    const hasVisited = window.sessionStorage.getItem('glasyan_has_visited');
-
-    if (hasVisited && !forceShow) {
-      if (onComplete) onComplete();
-      return;
-    }
-
-    setShouldRender(true);
-    // Lock scroll during loader
-    document.body.style.overflow = 'hidden';
 
     const overlay = overlayRef.current;
     const dropPath = dropPathRef.current;
@@ -52,14 +42,30 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
 
     if (!overlay || !dropPath || !dropGroup) return;
 
-    // Measure SVG stroke length for drawing
-    const dropLength = dropPath.getTotalLength();
+    // Check if user visited already or if force query param is present
+    const params = new URLSearchParams(window.location.search);
+    const forceParam = params.get('loader') === '1' || params.get('loader') === 'true' || params.get('replay') === '1';
+    const hasVisited = window.sessionStorage.getItem('glasyan_has_visited');
+
+    if (hasVisited && !forceShow && !forceParam) {
+      // Immediately dismiss for returning visitors
+      overlay.style.display = 'none';
+      setIsVisible(false);
+      document.body.style.overflow = '';
+      if (onComplete) onComplete();
+      return;
+    }
+
+    // Lock scroll during intro animation
+    document.body.style.overflow = 'hidden';
+
+    // Measure SVG stroke lengths
+    const dropLength = dropPath.getTotalLength ? dropPath.getTotalLength() : 140;
     dropPath.style.strokeDasharray = `${dropLength} ${dropLength}`;
     dropPath.style.strokeDashoffset = `${dropLength}`;
 
-    let waveLength = 200;
-    if (wavePath && typeof wavePath.getTotalLength === 'function') {
-      waveLength = wavePath.getTotalLength();
+    const waveLength = wavePath && wavePath.getTotalLength ? wavePath.getTotalLength() : 220;
+    if (wavePath) {
       wavePath.style.strokeDasharray = `${waveLength} ${waveLength}`;
       wavePath.style.strokeDashoffset = `${waveLength}`;
     }
@@ -68,16 +74,19 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
     const letters = wordmark ? wordmark.querySelectorAll('.loader-letter') : [];
 
     const tl = gsap.timeline({
+      delay: 0.1,
       onComplete: () => {
         window.sessionStorage.setItem('glasyan_has_visited', 'true');
         document.body.style.overflow = '';
         if (onComplete) onComplete();
-        // Remove loader from DOM after transition
-        setTimeout(() => setShouldRender(false), 200);
+        setTimeout(() => {
+          if (overlay) overlay.style.display = 'none';
+          setIsVisible(false);
+        }, 300);
       },
     });
 
-    // 1. Droplet outline draws, then fills teal
+    // 1. Droplet outline draws (0.8s), then fills teal (0.4s)
     tl.to(dropPath, {
       strokeDashoffset: 0,
       duration: 0.8,
@@ -95,15 +104,15 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
       // 2. Droplet falls 120px into pool
       .to(dropGroup, {
         y: 110,
-        scaleY: 1.15,
-        duration: 0.48,
+        scaleY: 1.18,
+        duration: 0.5,
         ease: 'power2.in',
       })
       .to(dropGroup, {
-        scaleY: 0.7,
-        scaleX: 1.3,
+        scaleY: 0.6,
+        scaleX: 1.4,
         opacity: 0,
-        duration: 0.15,
+        duration: 0.16,
         ease: 'power3.out',
       });
 
@@ -112,11 +121,11 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
       const rings = rippleBox.querySelectorAll('.loader-ripple-ring');
       tl.fromTo(
         rings,
-        { scale: 0.1, opacity: 0.8 },
+        { scale: 0.1, opacity: 0.85 },
         {
-          scale: 3.5,
+          scale: 3.8,
           opacity: 0,
-          duration: 1.1,
+          duration: 1.15,
           stagger: 0.14,
           ease: 'power2.out',
         },
@@ -124,7 +133,7 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
       );
     }
 
-    // 3. Wave path draws across & wordmark letters rise
+    // 3. Wave path draws across (0.9s expo.out) & wordmark letters rise
     if (wavePath) {
       tl.to(
         wavePath,
@@ -144,7 +153,7 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
         {
           yPercent: 0,
           opacity: 1,
-          duration: 0.6,
+          duration: 0.65,
           stagger: 0.05,
           ease: 'power3.out',
         },
@@ -158,7 +167,7 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
         counterObj,
         {
           value: 100,
-          duration: 1.2,
+          duration: 1.25,
           ease: 'power2.out',
           onUpdate: () => {
             countEl.innerText = Math.round(counterObj.value).toString().padStart(2, '0');
@@ -168,13 +177,12 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
       );
     }
 
-    // 5. Hold 0.3s, then curtain lifts
-    tl.to({}, { duration: 0.3 })
-      .to(overlay, {
-        clipPath: 'inset(0% 0% 100% 0%)',
-        duration: 1.0,
-        ease: 'expo.inOut',
-      });
+    // 5. Hold 0.3s, then white curtain lifts (clip-path inset top to bottom, 1s expo.inOut)
+    tl.to({}, { duration: 0.35 }).to(overlay, {
+      clipPath: 'inset(0% 0% 100% 0%)',
+      duration: 1.0,
+      ease: 'expo.inOut',
+    });
 
     return () => {
       tl.kill();
@@ -182,7 +190,7 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
     };
   }, [onComplete, forceShow]);
 
-  if (!shouldRender) return null;
+  if (!isVisible) return null;
 
   const brandName = 'GLASYAN';
 
@@ -191,6 +199,7 @@ export function Loader({ onComplete, forceShow = false }: LoaderProps) {
       ref={overlayRef}
       className="fixed inset-0 z-[99999] bg-white flex flex-col items-center justify-center select-none"
       style={{ clipPath: 'inset(0% 0% 0% 0%)', willChange: 'clip-path' }}
+      aria-label="Glasyan Site Loader"
     >
       <div className="relative flex flex-col items-center">
         {/* Animated Droplet and Wave SVG */}

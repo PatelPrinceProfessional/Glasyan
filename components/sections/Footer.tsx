@@ -190,6 +190,17 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs font-sans text-ink/50 pt-4 gap-4">
           <p>&copy; {new Date().getFullYear()} Glasyan High Alpine Cosmetics. All rights reserved.</p>
           <div className="flex items-center gap-6">
+            <button
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.sessionStorage.removeItem('glasyan_has_visited');
+                  window.location.href = '/?loader=1';
+                }
+              }}
+              className="text-teal/80 hover:text-teal hover:underline transition-colors cursor-pointer text-[11px] uppercase tracking-wider font-semibold"
+            >
+              Replay Intro Ceremony &#8634;
+            </button>
             <span>Crafted in Switzerland</span>
             <span>Zero Deuterium Protocol</span>
           </div>

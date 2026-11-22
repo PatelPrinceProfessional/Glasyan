@@ -77,6 +77,18 @@ export function DebugPanel() {
           {showMarkers ? 'ON' : 'OFF'}
         </button>
       </div>
+
+      <div className="pt-2 border-t border-white/20">
+        <button
+          onClick={() => {
+            window.sessionStorage.removeItem('glasyan_has_visited');
+            window.location.href = '/?loader=1';
+          }}
+          className="w-full py-1 rounded bg-teal text-white text-[10px] uppercase font-bold hover:bg-teal-light hover:text-ink transition-colors"
+        >
+          Replay Loader Ceremony
+        </button>
+      </div>
     </aside>
   );
 }
