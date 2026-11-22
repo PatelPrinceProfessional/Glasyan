@@ -105,61 +105,61 @@ export function CollectionSection() {
     <section ref={containerRef} className="collection-section relative w-full bg-white select-none">
       <div
         ref={pinTargetRef}
-        className="w-full h-screen overflow-hidden flex flex-col justify-between py-10 px-6 sm:px-12 relative"
+        className="w-full min-h-[90vh] lg:h-screen flex flex-col justify-between py-8 sm:py-10 px-4 sm:px-12 relative overflow-hidden"
       >
         {/* Top Pinned Header Strip */}
-        <div className="flex items-end justify-between max-w-7xl w-full mx-auto border-b border-teal/15 pb-5 z-20">
+        <div className="flex items-end justify-between max-w-7xl w-full mx-auto border-b border-teal/15 pb-4 sm:pb-5 z-20">
           <div>
-            <span className="font-sans text-xs uppercase tracking-[0.26em] text-teal font-semibold">
+            <span className="font-sans text-[11px] sm:text-xs uppercase tracking-[0.26em] text-teal font-semibold">
               05 Formulations
             </span>
-            <h2 className="font-melodrama text-3xl sm:text-4xl text-ink font-normal tracking-tight mt-1">
+            <h2 className="font-melodrama text-2xl sm:text-4xl text-ink font-normal tracking-tight mt-1">
               Curated Collections
             </h2>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="font-melodrama text-xl text-teal font-light">
+            <span className="font-melodrama text-lg sm:text-xl text-teal font-light">
               0{activeCardIndex + 1}
             </span>
-            <span className="text-xs font-sans text-ink/40 tracking-widest">
+            <span className="text-[11px] sm:text-xs font-sans text-ink/40 tracking-widest">
               / 0{collections.length}
             </span>
           </div>
         </div>
 
         {/* Horizontal Track Container */}
-        <div className="relative w-full my-auto overflow-x-auto lg:overflow-visible no-scrollbar py-6">
+        <div className="relative w-full my-auto overflow-x-auto lg:overflow-visible no-scrollbar py-4 sm:py-6 snap-x snap-mandatory">
           <div
             ref={trackRef}
-            className="flex gap-8 lg:gap-12 w-max px-4 lg:px-12 will-change-transform"
+            className="flex gap-4 sm:gap-8 lg:gap-12 w-max px-4 lg:px-12 will-change-transform"
           >
             {collections.map((col, idx) => (
               <div
                 key={col.id}
-                className="collection-scroll-card w-[310px] sm:w-[380px] lg:w-[440px] flex-shrink-0 glass-panel rounded-3xl p-7 flex flex-col justify-between transition-shadow duration-500 hover:shadow-glass-hover group will-change-transform"
+                className="collection-scroll-card w-[270px] sm:w-[350px] lg:w-[440px] flex-shrink-0 snap-center glass-panel rounded-3xl p-5 sm:p-7 flex flex-col justify-between transition-shadow duration-500 hover:shadow-glass-hover group will-change-transform"
               >
                 {/* Card Top */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="font-sans text-xs tracking-widest uppercase font-semibold text-teal">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <span className="font-sans text-[10px] sm:text-xs tracking-widest uppercase font-semibold text-teal">
                     {col.subtitle}
                   </span>
-                  <span className="text-xs font-sans text-ink/50 bg-teal-mist px-2.5 py-1 rounded-full">
+                  <span className="text-[10px] sm:text-xs font-sans text-ink/50 bg-teal-mist px-2.5 py-1 rounded-full">
                     {col.productCount} Formulations
                   </span>
                 </div>
 
                 {/* Card Product Slot Capsule Showcase */}
-                <div className="relative h-64 sm:h-72 my-4 flex items-center justify-center overflow-hidden">
+                <div className="relative h-48 sm:h-64 my-2 sm:my-4 flex items-center justify-center overflow-hidden">
                   <ProductSlot size="md" className="transition-transform duration-700 ease-out group-hover:scale-105" />
                 </div>
 
                 {/* Card Bottom Content */}
                 <div>
-                  <h3 className="font-melodrama text-2xl font-normal text-ink mb-2">
+                  <h3 className="font-melodrama text-xl sm:text-2xl font-normal text-ink mb-1.5 sm:mb-2">
                     {col.title}
                   </h3>
-                  <p className="font-sans text-xs text-ink/70 leading-relaxed mb-5 line-clamp-2">
+                  <p className="font-sans text-xs text-ink/70 leading-relaxed mb-4 sm:mb-5 line-clamp-2">
                     {col.description}
                   </p>
 

@@ -475,8 +475,6 @@ export function Product3D({
       ref={mountRef}
       className={`product-3d-canvas-wrapper relative flex items-center justify-center select-none cursor-grab active:cursor-grabbing will-change-transform ${className}`}
       style={{
-        width: `${dimensions.width}px`,
-        height: `${dimensions.height}px`,
         maxWidth: '100%',
       }}
       data-cursor="Drag"

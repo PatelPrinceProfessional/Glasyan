@@ -163,11 +163,11 @@ export function FeaturedProducts() {
                   className="transition-transform duration-700 ease-out group-hover:scale-108"
                 />
 
-                {/* Quick Add Overlay Button (Slides up on card hover) */}
+                {/* Quick Add Overlay Button (Always visible on mobile touch, slides up on card hover on desktop) */}
                 <button
                   onClick={(e) => handleQuickAdd(product, e)}
                   aria-label={`Quick add ${product.name} to cart`}
-                  className="absolute bottom-3 inset-x-8 py-3 rounded-full bg-teal text-white text-xs font-sans uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-lg opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-teal-deep"
+                  className="absolute bottom-3 inset-x-6 sm:inset-x-8 py-2.5 sm:py-3 rounded-full bg-teal text-white text-[11px] sm:text-xs font-sans uppercase tracking-widest font-semibold flex items-center justify-center gap-2 shadow-lg sm:opacity-0 sm:translate-y-4 sm:group-hover:opacity-100 sm:group-hover:translate-y-0 transition-all duration-300 hover:bg-teal-deep"
                 >
                   <Plus className="w-4 h-4" />
                   Quick Add

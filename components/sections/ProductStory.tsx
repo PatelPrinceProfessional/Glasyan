@@ -191,8 +191,25 @@ export function ProductStory() {
     <section ref={containerRef} id="rituals" className="product-story-section relative w-full bg-white select-none">
       <div
         ref={pinFrameRef}
-        className="w-full h-screen overflow-hidden flex items-center justify-center relative px-6 sm:px-12 lg:px-20"
+        className="w-full min-h-[90vh] py-16 lg:py-0 lg:h-screen lg:overflow-hidden flex flex-col justify-center items-center relative px-6 sm:px-12 lg:px-20"
       >
+        {/* Mobile Step Switcher Tabs (Only visible on mobile/tablet) */}
+        <div className="flex lg:hidden items-center justify-center gap-1.5 sm:gap-2 mb-6 w-full z-20">
+          {STORY_STEPS.map((step, idx) => (
+            <button
+              key={step.number}
+              onClick={() => setCurrentStepIndex(idx)}
+              className={`px-3 py-1.5 rounded-full text-[11px] font-sans font-medium transition-all ${
+                idx === currentStepIndex
+                  ? 'bg-teal text-white shadow-sm'
+                  : 'bg-teal-mist text-teal-deep hover:bg-teal/20'
+              }`}
+            >
+              {step.number} {step.category.split(' ')[0]}
+            </button>
+          ))}
+        </div>
+
         {/* Left Vertical Progress Line Indicator (DrawSVG style) */}
         <div className="absolute left-6 sm:left-10 top-1/4 bottom-1/4 w-[2px] bg-teal/15 hidden lg:block overflow-hidden">
           <div
@@ -231,13 +248,15 @@ export function ProductStory() {
           </div>
 
           {/* Right Content Column: Stacked Step Cards */}
-          <div className="lg:col-span-7 relative h-[420px] flex items-center">
+          <div className="lg:col-span-7 relative min-h-[360px] lg:h-[420px] flex items-center">
             {STORY_STEPS.map((step, idx) => {
               const Icon = step.icon;
               return (
                 <div
                   key={step.number}
-                  className="story-step-card absolute inset-0 flex flex-col justify-center will-change-transform"
+                  className={`story-step-card flex flex-col justify-center will-change-transform lg:absolute lg:inset-0 ${
+                    idx === currentStepIndex ? 'flex' : 'hidden lg:flex'
+                  }`}
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <span className="font-melodrama text-4xl sm:text-5xl text-teal font-light">
@@ -249,31 +268,31 @@ export function ProductStory() {
                     </span>
                   </div>
 
-                  <h3 className="font-melodrama text-3xl sm:text-4xl lg:text-5xl font-normal text-ink leading-tight tracking-tight mb-3">
+                  <h3 className="font-melodrama text-2xl sm:text-4xl lg:text-5xl font-normal text-ink leading-tight tracking-tight mb-3">
                     {step.title}
                   </h3>
 
-                  <p className="font-serif italic text-base sm:text-lg text-teal mb-5">
+                  <p className="font-serif italic text-sm sm:text-lg text-teal mb-4 sm:mb-5">
                     {step.tagline}
                   </p>
 
-                  <p className="font-sans text-sm sm:text-base text-ink/75 leading-relaxed max-w-xl mb-8">
+                  <p className="font-sans text-xs sm:text-base text-ink/75 leading-relaxed max-w-xl mb-6 sm:mb-8">
                     {step.body}
                   </p>
 
                   {/* Impact Metric Strip */}
-                  <div className="flex items-center gap-6 pt-6 border-t border-teal/15">
+                  <div className="flex items-center gap-6 pt-4 sm:pt-6 border-t border-teal/15">
                     <div>
-                      <span className="font-melodrama text-3xl sm:text-4xl text-ink font-light block">
+                      <span className="font-melodrama text-2xl sm:text-4xl text-ink font-light block">
                         {step.metric}
                       </span>
-                      <span className="font-sans text-[11px] uppercase tracking-wider text-ink/60">
+                      <span className="font-sans text-[10px] sm:text-[11px] uppercase tracking-wider text-ink/60">
                         {step.metricLabel}
                       </span>
                     </div>
 
-                    <div className="w-10 h-10 rounded-full bg-teal-mist/60 flex items-center justify-center text-teal ml-auto">
-                      <Icon className="w-5 h-5" />
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-teal-mist/60 flex items-center justify-center text-teal ml-auto">
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                   </div>
                 </div>

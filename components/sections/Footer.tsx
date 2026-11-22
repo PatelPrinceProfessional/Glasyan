@@ -173,13 +173,13 @@ export function Footer() {
         {/* Giant Watermark Outline "GLASYAN" Drawing across footer */}
         <div
           ref={giantWordmarkRef}
-          className="w-full overflow-hidden flex justify-center py-6 pointer-events-none select-none"
+          className="w-full overflow-hidden flex justify-center py-4 sm:py-6 pointer-events-none select-none"
           aria-hidden="true"
         >
           {'GLASYAN'.split('').map((char, i) => (
             <span
               key={i}
-              className="giant-footer-letter inline-block font-melodrama text-[16vw] font-normal leading-none tracking-[0.1em] text-teal will-change-transform opacity-10"
+              className="giant-footer-letter inline-block font-melodrama text-[13vw] sm:text-[16vw] font-normal leading-none tracking-[0.06em] sm:tracking-[0.1em] text-teal will-change-transform opacity-10"
             >
               {char}
             </span>
