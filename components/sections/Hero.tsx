@@ -231,27 +231,27 @@ export function Hero() {
         {/* Layer 4: Centered Product Slot Capsule */}
         <div
           ref={slotWrapperRef}
-          className="relative z-10 my-auto flex flex-col items-center justify-center will-change-transform"
+          className="relative z-10 mt-32 sm:mt-36 md:mt-40 mb-auto flex flex-col items-center justify-center will-change-transform"
         >
           <ProductSlot size="hero" />
         </div>
 
         {/* Layer 5: Hero Headlines and Subtitle Text */}
-        <div className="absolute inset-x-0 top-[18%] sm:top-[16%] flex flex-col items-center text-center px-4 z-20 pointer-events-none">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-mist/80 border border-teal/20 text-teal-deep text-[11px] font-sans tracking-[0.2em] uppercase font-semibold mb-3">
+        <div className="absolute inset-x-0 top-[8%] sm:top-[6%] md:top-[6%] flex flex-col items-center text-center px-4 z-20 pointer-events-none">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-mist/80 border border-teal/20 text-teal-deep text-[10px] sm:text-[11px] font-sans tracking-[0.2em] uppercase font-semibold mb-2 sm:mb-3">
             <Droplets className="w-3.5 h-3.5 text-teal" />
             Pure Alpine Hair Alchemy
           </div>
 
           <h1
             ref={headlineLine1Ref}
-            className="font-melodrama text-display-l sm:text-display-xl font-normal text-ink tracking-tight will-change-transform"
+            className="font-melodrama text-3xl sm:text-5xl md:text-6xl font-normal text-ink tracking-tight will-change-transform"
           >
             BORN FROM WATER.
           </h1>
           <h2
             ref={headlineLine2Ref}
-            className="font-melodrama text-display-l sm:text-display-xl font-normal text-teal tracking-tight mt-1 sm:mt-2 will-change-transform"
+            className="font-melodrama text-3xl sm:text-5xl md:text-6xl font-normal text-teal tracking-tight mt-0.5 sm:mt-1 will-change-transform"
           >
             MADE FOR RADIANCE.
           </h2>
@@ -260,7 +260,7 @@ export function Hero() {
         {/* Layer 6: Orbiting Ingredient Chips (Settles on scroll) */}
         <div
           ref={chipsOrbitRef}
-          className="absolute inset-x-0 bottom-[24%] sm:bottom-[20%] flex items-center justify-center gap-3 sm:gap-6 px-4 z-20 pointer-events-none"
+          className="absolute inset-x-0 bottom-[18%] sm:bottom-[15%] flex items-center justify-center gap-3 sm:gap-6 px-4 z-20 pointer-events-none"
         >
           <div className="hero-chip-badge glass-panel px-4 py-2 rounded-full flex items-center gap-2.5 text-xs font-sans text-ink shadow-sm opacity-0 will-change-transform">
             <Sparkles className="w-3.5 h-3.5 text-teal" />
@@ -279,13 +279,13 @@ export function Hero() {
         {/* Layer 7: Short Handoff Line (fades in near end of pin) */}
         <p
           ref={handoffLineRef}
-          className="absolute bottom-[14%] inset-x-0 text-center font-melodrama text-lg sm:text-xl text-teal-deep opacity-0 tracking-wide pointer-events-none z-20"
+          className="absolute bottom-[13%] sm:bottom-[11%] inset-x-0 text-center font-melodrama text-lg sm:text-xl text-teal-deep opacity-0 tracking-wide pointer-events-none z-20"
         >
           Pure water. Cellular luminescence.
         </p>
 
         {/* Layer 8: Primary Call To Action */}
-        <div ref={ctaBoxRef} className="absolute bottom-[8%] sm:bottom-[6%] z-30 flex flex-col items-center gap-3">
+        <div ref={ctaBoxRef} className="absolute bottom-[6%] sm:bottom-[5%] z-30 flex flex-col items-center gap-3">
           <Link href="/collections/all">
             <MagneticButton variant="primary" size="lg" className="shadow-lg">
               Explore The Rituals

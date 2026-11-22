@@ -38,10 +38,10 @@ export function Product3D({
   const [hasWebGL, setHasWebGL] = useState(true);
 
   const dimensions = {
-    sm: { width: 140, height: 210 },
-    md: { width: 180, height: 270 },
-    lg: { width: 230, height: 340 },
-    hero: { width: 270, height: 400 },
+    sm: { width: 130, height: 180 },
+    md: { width: 170, height: 240 },
+    lg: { width: 220, height: 310 },
+    hero: { width: 250, height: 350 },
   }[size];
 
   useEffect(() => {
@@ -67,8 +67,8 @@ export function Product3D({
     // 1. SCENE & CAMERA
     const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 50);
-    camera.position.set(0, 0.0, 5.5);
+    const camera = new THREE.PerspectiveCamera(32, width / height, 0.1, 50);
+    camera.position.set(0, 0.0, 6.2);
     camera.lookAt(0, 0, 0);
 
     // 2. RENDERER
@@ -104,7 +104,7 @@ export function Product3D({
 
     // Bottom glow point light to illuminate glass base
     const baseGlow = new THREE.PointLight(0x008c95, 1.8, 4.0);
-    baseGlow.position.set(0, -1.8, 0.2);
+    baseGlow.position.set(0, -1.2, 0.2);
     scene.add(baseGlow);
 
     // 4. BOTTLE ROOT GROUP
@@ -113,8 +113,10 @@ export function Product3D({
 
     // Inner group to center and scale the bottle geometry properly
     const bottleInnerGroup = new THREE.Group();
-    bottleInnerGroup.position.y = -0.42; // Vertically center the bottle around y=0
-    bottleInnerGroup.scale.set(0.72, 0.72, 0.72); // Compact luxury scale so full base is visible
+    // Bottle geometry ranges from y = -1.65 (base) to y = +2.50 (bulb tip). Midpoint = +0.425.
+    // Offsetting by -0.425 centers the model geometry symmetrically around y = 0.
+    bottleInnerGroup.position.y = -0.425;
+    bottleInnerGroup.scale.set(0.58, 0.58, 0.58); // Refined luxury scale ensuring full base & shadow visibility
     bottleGroup.add(bottleInnerGroup);
 
     // --- A. OUTER GLASS BODY (Lathe Geometry for true French luxury vial silhouette) ---
@@ -483,7 +485,7 @@ export function Product3D({
       <canvas ref={canvasRef} className="w-full h-full block pointer-events-none drop-shadow-2xl" />
 
       {/* Subtle Ground Contact Shadow */}
-      <div className="absolute -bottom-4 inset-x-12 h-6 bg-teal-deep/20 blur-xl rounded-full pointer-events-none -z-10" />
+      <div className="absolute -bottom-2 inset-x-8 h-4 bg-teal-deep/25 blur-md rounded-full pointer-events-none -z-10" />
     </div>
   );
 }
