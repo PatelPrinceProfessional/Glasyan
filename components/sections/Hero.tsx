@@ -18,7 +18,11 @@ import Link from 'next/link';
  * - Idle: slot floats +-10px with soft shadow, mouse parallax via quickTo
  * - Scroll scrub: headline lines split apart (-30% / +30%), slot scales 1 to 1.18 & rotates, chips orbit
  */
-export function Hero() {
+interface HeroProps {
+  isReady?: boolean;
+}
+
+export function Hero({ isReady = true }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pinTargetRef = useRef<HTMLDivElement>(null);
   const ghostTextRef = useRef<HTMLDivElement>(null);
@@ -48,8 +52,22 @@ export function Hero() {
       return;
     }
 
-    // 1. INTRO TIMELINE (Runs on mount for ALL screen sizes)
-    const introTl = gsap.timeline({ delay: 0.3 });
+    // While loader is running, hold elements in their hidden intro state
+    if (!isReady) {
+      if (ghostText) gsap.set(ghostText, { opacity: 0 });
+      gsap.set(slotWrapper, { y: 80, scale: 0.9, filter: 'blur(8px)', opacity: 0 });
+      if (h1Line1 && h1Line2) gsap.set([h1Line1, h1Line2], { opacity: 0 });
+      if (ctaBox) gsap.set(ctaBox, { opacity: 0, y: 15 });
+      if (scrollHint) gsap.set(scrollHint, { opacity: 0 });
+      if (chipsBox) {
+        const chips = chipsBox.querySelectorAll('.hero-chip-badge');
+        gsap.set(chips, { opacity: 0, y: 15 });
+      }
+      return;
+    }
+
+    // 1. INTRO TIMELINE (Runs on mount/isReady for ALL screen sizes)
+    const introTl = gsap.timeline({ delay: 0.1 });
 
     // Ghost outline fades up
     if (ghostText) {
@@ -202,7 +220,7 @@ export function Hero() {
       introTl.kill();
       mm.revert();
     };
-  }, []);
+  }, [isReady]);
 
   return (
     <section ref={containerRef} className="hero-section relative w-full bg-white select-none">

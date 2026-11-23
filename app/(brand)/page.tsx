@@ -27,8 +27,8 @@ export default function HomePage() {
       {/* 6.0 Loader (SessionStorage-aware) */}
       <Loader onComplete={() => setLoaderComplete(true)} />
 
-      {/* 6.1 Hero (Pinned 300% Desktop / 180% Mobile) */}
-      <Hero />
+      {/* 6.1 Hero (Synchronized with Loader Completion) */}
+      <Hero isReady={loaderComplete} />
 
       {/* 6.2 Statement (ScrollWords Scrub) */}
       <Statement />
