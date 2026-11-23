@@ -2,8 +2,21 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Product3D } from './Product3D';
+import dynamic from 'next/dynamic';
 import { assets } from '@/assets.config';
+
+// Dynamic import with SSR disabled for Three.js WebGL to ensure zero server-client bundle desync
+const Product3D = dynamic(
+  () => import('./Product3D').then((mod) => mod.Product3D),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="w-16 h-28 rounded-full bg-teal-mist/40 animate-pulse blur-sm" />
+      </div>
+    ),
+  }
+);
 
 interface ProductSlotProps {
   imageSrc?: string;
